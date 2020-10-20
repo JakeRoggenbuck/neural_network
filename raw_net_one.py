@@ -2,7 +2,7 @@ import numpy as np
 
 
 def signmoid(x):
-    return 1.0/(1 + np.exp(-x))
+    return 1.0 / (1 + np.exp(-x))
 
 
 def signmoid_derivative(x):
@@ -22,21 +22,28 @@ class NeuralNetwork:
         self.output = signmoid(np.dot(self.layer1, self.weights2))
 
     def backprop(self):
-        d_weights1 = np.dot(self.input.T, np.dot(2 * (self.y - self.output) * signmoid_derivative(self.output), self.weights2.T) * signmoid_derivative(self.layer1))
-        d_weights2 = np.dot(self.layer1.T, (2 * (self.y - self.output) * signmoid_derivative(self.output)))
+        d_weights1 = np.dot(
+            self.input.T,
+            np.dot(
+                2 * (self.y - self.output) * signmoid_derivative(self.output),
+                self.weights2.T,
+            )
+            * signmoid_derivative(self.layer1),
+        )
+        d_weights2 = np.dot(
+            self.layer1.T,
+            (2 * (self.y - self.output) * signmoid_derivative(self.output)),
+        )
 
         self.weights1 += d_weights1
         self.weights2 += d_weights2
 
 
 if __name__ == "__main__":
-    X = np.array([[0,0,1],
-                  [0,1,1],
-                  [1,0,1],
-                  [1,1,1]])
-    y = np.array([[0],[1],[1],[0]])
+    X = np.array([[0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
+    y = np.array([[0], [1], [1], [0]])
 
-    nn = NeuralNetwork(X,y)
+    nn = NeuralNetwork(X, y)
 
     for i in range(1500):
         nn.feedforward()

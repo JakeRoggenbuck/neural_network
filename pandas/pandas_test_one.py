@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 # url: https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
@@ -25,7 +26,13 @@ for i, species in enumerate(df["class"].unique()):
                               label=species, figsize=(10, 7), ax=ax
                               )
 
-# Make other plots
-df.plot.hist("Hey")
-df.plot.box("Hey")
+random_index = np.random.choice(df.index, replace=False, size=10)
+df.loc[random_index,'sepal_length'] = None
+print(df.isnull().any())
+print(f"Before {df.shape[0]}")
+df2 = df.dropna()
+print(f"After {df2.shape[0]}")
+df.sepal_length = df.sepal_length.fillna(df.sepal_length.mean())
+print(f"Far After {df.shape[0]}")
+
 plt.show()
